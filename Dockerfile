@@ -8,5 +8,5 @@ COPY *.yml /playbooks/
 RUN ln -s /etc/ansible/roles /playbooks/roles
 RUN echo "localhost ansible_connection=local" >> /etc/ansible/hosts
 WORKDIR /playbooks
-RUN ansible-playbook test.yml --tags image_build
+RUN ansible-playbook local.yml --tags image_build
 CMD ["/bin/bash"]
