@@ -42,6 +42,7 @@
         KIND_ver: "{{ KIND_VER | default('') }}"
         KIND_bin_path: "{{ testing_bin_path }}/kind"
         KIND_kube_ver: "{{ KIND_KUBE_VER | default('') }}"
+        kind_kube_ver: "{{ KIND_KUBE_VER | default('') }}" # mvala
         olm_ver: "{{ OLM_VER | default('') }}"
 
     - name: "Clear the operator working directory"
