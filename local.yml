@@ -43,7 +43,7 @@
         # KIND_bin_path: "{{ testing_bin_path }}/kind"
         # KIND_kube_ver: "{{ KIND_KUBE_VER | default('') }}"
         kind_bin_path: "{{ testing_bin_path }}/kind"
-        kind_kube_ver: "{{ KIND_KUBE_VER | default('latest') }}" # mvala
+        kind_kube_ver: "{{ KIND_KUBE_VER | default('') }}" # mvala
         olm_ver: "{{ OLM_VER | default('') }}"
       tags: always
 
