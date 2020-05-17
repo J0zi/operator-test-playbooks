@@ -1,5 +1,4 @@
 ---
-
 - name: Delete kind cluster
   block:
     - name: Check that the kind executable exists
