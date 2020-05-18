@@ -7,4 +7,7 @@ catalogue_image_name: operatorhub-catalog
 catalogue_image_namespace: operatorhub
 catalogue_image_registry: localhost:5000
 catalogue_image_tag: dev
+catalogue_source_namespace: test-operators
+catalogue_source_name: test-operators
+
 
