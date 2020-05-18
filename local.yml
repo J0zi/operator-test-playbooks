@@ -53,6 +53,7 @@
     - { role: kubectl, tags: ["kubectl"] }
     - { role: kind, tags: ["kind"] }
     - { role: install_operator_prereqs, tags: ["operator_prereqs"] }
+    - { role: build_upstream_catalog, tags: ["operator_catalogue"] }
     - { role: todo, tags: ["pure_test"]}
     # - { role: operator_courier_verify, tags: ["pure_test", "operator_courier_verify"] }
     

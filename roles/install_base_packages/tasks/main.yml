@@ -7,6 +7,7 @@
       - ca-certificates
       - python3-pip
       - python3-setuptools
+      - docker-py
     state: latest 
     update_cache: yes
   become: yes
@@ -19,6 +20,7 @@
     name:
       - software-properties-common
       - virtualenv
+      - python-docker
     state: latest 
     update_cache: yes
   become: yes
@@ -30,8 +32,8 @@
 - name: "Install required for RedHat/CentOS system only"
   package: 
     name:
-      # - python-virtualenv
       - python3-virtualenv
+      - python3-dockerpty
     state: latest 
     update_cache: yes
   become: yes
