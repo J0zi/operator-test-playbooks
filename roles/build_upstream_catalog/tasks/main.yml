@@ -12,7 +12,7 @@
       dest: "{{ catalog_repo_dir }}"
       version: master
       force: true
-    when: operator_dir.stat.isdir is defined and operator_dir.stat.isdir
+    when: not (operator_dir.stat.isdir is defined and operator_dir.stat.isdir)
   tags: 
     - catalogue_build
 
