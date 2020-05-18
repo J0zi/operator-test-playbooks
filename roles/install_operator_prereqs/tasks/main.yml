@@ -88,9 +88,9 @@
     when:
       - offline_cataloger_help_result.rc is defined
       - offline_cataloger_help_result.rc != 0
-  # when:
-  #   - operator_dir is defined
-  #   - operator_dir != ""
+  when:
+    - operator_dir is defined
+    - operator_dir != ""
   tags:
     - install
     - image_build
