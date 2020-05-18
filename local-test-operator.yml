@@ -19,12 +19,6 @@
     current_channel: '' # Added to avoid a potential bug with undefined variables
     distro_type: "{{ DISTRO_TYPE | default('') }}"
   
-  environment:
-    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
-      
-  pre_tasks:
-    - setup:
-  
   tasks:
     - set_fact:
         distro_type: "{{ DISTRO_TYPE | default('') }}"
@@ -42,7 +36,6 @@
         KIND_ver: "{{ KIND_VER | default('') }}"
         KIND_bin_path: "{{ testing_bin_path }}/kind"
         KIND_kube_ver: "{{ KIND_KUBE_VER | default('') }}"
-        kind_kube_ver: "{{ KIND_KUBE_VER | default('') }}" # mvala
         olm_ver: "{{ OLM_VER | default('') }}"
 
     - name: "Clear the operator working directory"
