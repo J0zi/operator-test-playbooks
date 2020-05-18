@@ -52,7 +52,7 @@
     - install
     - host_build
 
-- name: Insralling Kind with registry
+- name: Installing Kind with registry
   block:
     - name: Generating file for kind and registry
       template:
