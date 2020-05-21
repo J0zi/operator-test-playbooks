@@ -5,12 +5,12 @@
 - name: "Check operator version"
   shell: "cd {{ operator_dir }}; ls -d */| sort --version-sort | tail -n 1|sed s/.$//"
   register: op_ver
-  when: distro_type == "upstream"
+  when: run_upstream|bool
 
 - name: "Find CSV for upstream Subscription"
   shell: "ls {{ operator_dir }}/{{ op_ver.stdout }}/*clusterser*|awk -F'/' '{print $NF}'|awk -F'.clusterserviceversion.yaml' '{print $1}'"
   register: csv_name
-  when: distro_type == "upstream"
+  when: run_upstream|bool
 
 - name: "Openshift only"
   block:
@@ -105,7 +105,7 @@
 
 - name: "Create the catalogsource"
   shell: "{{ oc_bin_path }} apply -f {{ olm_operator_files_path }}/catalogsource.yml"
-  when: distro_type == "upstream"
+  when: run_upstream|bool
 
 - name: "Create the operatorsource"
   shell: "{{ oc_bin_path }} apply -f {{ olm_operator_files_path }}/operatorsource.yml"
@@ -134,7 +134,9 @@
   shell: "{{ oc_bin_path }} create -f {{ operator_work_dir }}/../scorecard.secret.yaml"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: (not run_upstream|bool) and (scorecard_secret_result.stat.exists == True)
+  when:
+    - scorecard_secret_result.stat.exists == True
+    - not run_upstream|bool
 
 - name: "Copy namespace file"
   template:

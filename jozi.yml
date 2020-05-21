@@ -46,12 +46,12 @@
     - name: "Check operator version"
       shell: "cd {{ operator_dir }}; ls -d */| sort --version-sort | tail -n 1|sed s/.$//"
       register: op_ver
-      when: distro_type == "upstream"
+      when: run_upstream|bool
 
     - name: "Find CSV for upstream Subscription"
       shell: "ls {{ operator_dir }}/{{ op_ver.stdout }}/*clusterser*|awk -F'/' '{print $NF}'|awk -F'.clusterserviceversion.yaml' '{print $1}'"
       register: csv_name
-      when: distro_type == "upstream"
+      when: run_upstream|bool
 
     - name: "Process the subscription template"
       template:
