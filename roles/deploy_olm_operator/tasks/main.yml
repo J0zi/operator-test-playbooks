@@ -63,7 +63,7 @@
       - kube_objects != "N/A"
       - kube_objects != "null"
 
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 
 
@@ -79,7 +79,7 @@
   template:
     src: "marketplacesecret.yml.j2"
     dest: "{{ olm_operator_files_path }}/marketplacesecret.processed.yml"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Process the subscription template"
   template:
@@ -90,7 +90,7 @@
   template:
     src: operatorsource.yml.j2
     dest: "{{ olm_operator_files_path }}/operatorsource.yml"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Process the catalogsource template"
   template:
@@ -111,7 +111,7 @@
   shell: "{{ oc_bin_path }} apply -f {{ olm_operator_files_path }}/operatorsource.yml"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Wait for the operatorsource pod to start up"
   shell: "{{ oc_bin_path }} get pods -n openshift-marketplace | grep test-operators- | grep Running"
@@ -122,19 +122,19 @@
   ignore_errors: true
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Check if scorecard secret exists"
   stat:
     path: "{{ operator_work_dir }}/../scorecard.secret.yaml"
   register: scorecard_secret_result
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Create the scorecard secret if it exists"
   shell: "{{ oc_bin_path }} create -f {{ operator_work_dir }}/../scorecard.secret.yaml"
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: ((distro_type is undefined) or (distro_type != "upstream")) and (scorecard_secret_result.stat.exists == True)
+  when: (not run_upstream|bool) and (scorecard_secret_result.stat.exists == True)
 
 - name: "Copy namespace file"
   template:
@@ -209,7 +209,7 @@
   register: catalog_source_result
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: "Output the catalogsource log to a debug file"
   copy:

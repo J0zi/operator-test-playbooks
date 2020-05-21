@@ -22,7 +22,7 @@
     src: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ oc_version }}/openshift-client-linux-{{ oc_version }}.tar.gz"
     dest: "{{ testing_bin_path }}"
     remote_src: yes
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
   tags:
     - install
     - image_build

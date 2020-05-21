@@ -43,7 +43,7 @@
 
 - name: "Run operator-courier nest to copy the operator metadata in nested format to the work dir"
   shell: "operator-courier nest {{ operator_dir }} {{ operator_work_dir }}"
-  when: (distro_type is undefined) or (distro_type != "upstream")
+  when: not run_upstream|bool
 
 - name: Copy the operator metadata in nested format to the work dir
   copy:
