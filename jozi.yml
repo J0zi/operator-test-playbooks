@@ -27,7 +27,7 @@
         scorecard_cr_dir: "{{ work_dir }}/scorecard-cr-files"
         kube_objects_dir: "{{ work_dir }}/kube_objects"
         testing_bin_path: "{{ work_dir }}/bin"
-        oc_bin_path: "{{ 'kubectl' if (distro_type == 'upstream') else \"{{ testing_bin_path }}/oc\" }}"
+        oc_bin_path: "{{ 'kubectl' if run_upstream else \"{{ testing_bin_path }}/oc\" }}"
         jq_bin_path: "{{ testing_bin_path }}/jq"
         yq_bin_path: "{{ testing_bin_path }}/yq"
         go_bin_path: "{{ testing_bin_path }}/go/bin/go"
@@ -55,5 +55,5 @@
 
     - name: "Process the subscription template"
       template:
-        src: "{{ 'roles/deploy_olm_operator/templates/subscription_upstream.yml.j2' if (distro_type == 'upstream') else \"subscription.yml.j2\" }}"
+        src: "{{ 'roles/deploy_olm_operator/templates/subscription_upstream.yml.j2' if run_upstream else \"subscription.yml.j2\" }}"
         dest: "{{ olm_operator_files_path }}/subscription.yml"

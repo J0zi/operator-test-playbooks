@@ -14,7 +14,7 @@
   vars:
     openshift_namespace: "test-operator"
     work_dir: "{{ lookup('env', 'WORKSPACE') }}"
-    oc_bin_path: "{{ 'kubectl' if (distro_type == 'upstream') else 'oc' }}"
+    oc_bin_path: "{{ 'kubectl' if run_upstream else 'oc' }}"
     pod_name: "cvp-ubi-check"
 
   tasks:
