@@ -45,9 +45,9 @@
 
   roles:
     - { role: install_base_packages, tags: ["base"] }
-    - { role: docker, tags: ["docker"] }
-    - { role: kubectl, tags: ["kubectl"] }
-    - { role: kind, tags: ["kind"] }
+    - { role: install_docker, tags: ["docker"] }
+    - { role: install_kubectl, tags: ["kubectl"] }
+    - { role: install_kind, tags: ["kind"] }
     - { role: install_operator_prereqs, tags: ["operator_prereqs"] }
     - { role: build_upstream_catalog, tags: ["operator_catalogue"] }
     # - { role: operator_courier_verify, tags: ["pure_test", "operator_courier_verify"] }
