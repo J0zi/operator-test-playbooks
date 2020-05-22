@@ -29,7 +29,10 @@
       tags:
         - always
       when: run_upstream|bool
+<<<<<<< HEAD
+=======
 
+>>>>>>> eedb020... Removed trailing spaces
   tasks:
     - set_fact:
         operator_work_dir: "{{ work_dir }}/operator-files"

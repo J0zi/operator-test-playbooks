@@ -234,6 +234,7 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: not run_upstream|bool
+<<<<<<< HEAD
 
 - name: "Get the catalogsource pod log (upstream)"
   shell: "{{ oc_bin_path }} get --output=name pods {{ upstream_namespace_param }} | grep test-operators-ocs | cut -d' ' -f1 | xargs -I{} {{ oc_bin_path }} logs {} {{ upstream_namespace_param }}"
@@ -241,6 +242,8 @@
   environment:
     KUBECONFIG: "{{ kubeconfig_path }}"
   when: run_upstream|bool
+=======
+>>>>>>> 8499c5c... Improved run_upstream flag in roles
 
 - name: "Output the catalogsource log to a debug file"
   copy:
