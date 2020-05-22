@@ -29,7 +29,7 @@
         creates: /etc/yum.repos.d/docker-ce.repo
 
     - name: "Install docker-ce"
-      yum: 
+      yum:
         name: docker-ce
         state: latest
   become: yes
@@ -42,7 +42,6 @@
   group:
     name: "{{ docker_group }}"
     state: present
-  # register: docker_group
   become: yes
   tags:
     - install
@@ -54,7 +53,6 @@
     groups: docker
     append: yes
   become: yes
-  # when: docker_group is succeeded
   tags:
     - install
     - host_build
@@ -66,7 +64,7 @@
     - host_build
 
 - name: Ensure docker service started
-  service: 
+  service:
     name: docker
     state: started
   become: yes
