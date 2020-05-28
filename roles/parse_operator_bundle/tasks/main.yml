@@ -23,22 +23,18 @@
     skopeo_inspect_json: "{{ skopeo_inspect_result.stdout | from_json }}"
 
 - set_fact:
-    is_bundle_image: "{{ skopeo_inspect_json.Labels['com.redhat.delivery.operator.bundle'] }}"
+    is_bundle_image: true
     package_name: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.package.v1'] }}"
     default_channel: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.channel.default.v1'] }}"
     current_channel: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.channel.default.v1'] }}" # using default channel since the bundle only has one
-    ocp_versions: "{{ skopeo_inspect_json.Labels['com.redhat.openshift.versions'].split(',') }}"
+    ocp_versions: []
     is_backport: false
-  when: not run_upstream|bool
 
 - set_fact:
     is_bundle_image: "{{ skopeo_inspect_json.Labels['com.redhat.delivery.operator.bundle'] }}"
-    package_name: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.package.v1'] }}"
-    default_channel: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.channel.default.v1'] }}"
-    current_channel: "{{ skopeo_inspect_json.Labels['operators.operatorframework.io.bundle.channel.default.v1'] }}" # using default channel since the bundle only has one
     ocp_versions: "{{ skopeo_inspect_json.Labels['com.redhat.openshift.versions'].split(',') }}"
-    is_backport: false
-  when: run_upstream|bool
+  when: not run_upstream|bool
+
 - set_fact:
     is_backport: "{{ skopeo_inspect_json.Labels['com.redhat.delivery.backport'] }}"
   when: skopeo_inspect_json.Labels['com.redhat.delivery.backport'] is defined
