@@ -32,7 +32,7 @@
     operator_version: "{{ operator_version[0] | basename }}"
 
 - set_fact:
-    bundle_image: "localhost:5000/operators-test/{{ operator_name }}:v{{ operator_version }}"
+    bundle_image: "{{ bundle_registry }}/{{ bundle_image_namespace }}/{{ operator_name }}:v{{ operator_version }}"
 
 - name: Remove bundle image {{ bundle_image }}
   shell: "docker rmi -f {{ bundle_image }}"
