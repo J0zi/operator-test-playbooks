@@ -16,7 +16,6 @@
     run_remove_catalog_repo: true
     run_manifest_test: false
     run_bundle_test: true
-    distro_type: "{{ 'upstream' if run_upstream else '' }}"
     work_dir: "/tmp/operator-test"
     operator_dir: "dummy" # so operator-courier will be installed
     bundle_image: "dummy" # so skopeo and umoci will be installed
