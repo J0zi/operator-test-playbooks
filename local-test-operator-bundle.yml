@@ -28,7 +28,7 @@
         name: install_operator_prereqs
       when: run_prereqs|bool
 
-    - name: "Convert manifest format to bundle when needed"
+    - name: "Build bundle image"
       include_role:
         name: build_image_bundle
 
