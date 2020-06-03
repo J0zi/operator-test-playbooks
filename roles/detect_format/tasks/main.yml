@@ -82,5 +82,5 @@
 
 - debug:
     var: operator_vars
-    verbosity: 2
+    verbosity: 3
 
