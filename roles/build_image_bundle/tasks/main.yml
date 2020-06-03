@@ -61,7 +61,7 @@
         path: "{{ annotation_file_path }}"
       register: annotation_file_st
 
-    - name: Fail if anotation file doesn't exists
+    - name: Fail if annotation file doesn't exists
       fail:
       when: not annotation_file_st.stat.exists
 
