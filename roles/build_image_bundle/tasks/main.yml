@@ -73,9 +73,6 @@
       set_fact:
         annotations_vars: "{{ annotation_data.stdout | from_yaml }}"
 
-    - debug:
-        var: annotations_vars.annotations
-
     - name: Set annotation variables
       set_fact:
         operator_channel_default: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.channel.default.v1'] }}"

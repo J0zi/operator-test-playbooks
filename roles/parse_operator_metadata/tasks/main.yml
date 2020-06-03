@@ -148,11 +148,6 @@
         operator_vars: "{{ operator_vars_tmp | from_yaml }}"
     when: run_upstream|bool
 
-  - debug:
-      var: operator_vars
-  # - fail:
-  #     msg: "XXXX"
-
   - name: "Determine and setfact for podname"
     set_fact:
       operator_pod_name: "{{ operator_vars.spec.install.spec.deployments[0].name }}"
