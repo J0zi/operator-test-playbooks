@@ -160,9 +160,3 @@
   tags:
     - install
     - image_build
-
-- debug:
-    var: bundle_image
-
-- fail:
-    msg: "aaa"
