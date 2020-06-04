@@ -67,12 +67,7 @@
   - name: "Getting content of package file"
     shell: "cat {{ csv_file_path }}"
     register: csv_data
-  - name: Set facts
-    set_fact:
-      operator_vars_tmp: "{{ csv_data.stdout | from_yaml }}"
-  - name: Set facts
-    set_fact:
-      operator_vars: "{{ operator_vars_tmp | from_yaml }}"
+
 
 - name: Set operator name variable from csv
   set_fact:
