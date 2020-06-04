@@ -82,9 +82,4 @@
 
 - debug:
     var: operator_vars
-<<<<<<< HEAD
     verbosity: 3
-=======
-    verbosity: 2
->>>>>>> da2ba49... Improved operator info variables
-
