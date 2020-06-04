@@ -54,7 +54,8 @@
         run_cleanup: "{{ run_cleanup | default(true) }}"
         run_remove_catalog_repo: "{{ run_remove_catalog_repo | default(true) }}"
         operator_format: "bundle"
-
+      tags:
+        - always
 
   roles:
     - { role: install_base_packages, tags: ["base"], when: run_host_init|bool }
