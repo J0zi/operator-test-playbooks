@@ -11,7 +11,6 @@
 
 - name: Detect operator format
   block:
-
     - fail:
         msg: "Operator version is unefined !!! Try '-e operator_version=x.y.z'."
       when: operator_version is undefined

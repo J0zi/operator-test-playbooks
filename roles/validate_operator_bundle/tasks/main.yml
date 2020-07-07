@@ -46,7 +46,7 @@
 
     - name: "Output the return code of operator-sdk bundle validate command to a debug file"
       copy:
-        content: "{{ sdk_validation_result.rc }}"
+        content: "{{ sdk_validation_upstream_result.rc }}"
         dest: "{{ work_dir }}/validation-rc.txt"
       when: sdk_validation_upstream_result.rc is defined
 

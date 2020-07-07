@@ -52,4 +52,8 @@
 
   - name: "Sets operator variables from csv '{{ csv_file_path }}'"
     set_fact:
-      operator_vars: "{{ operator_vars_tmp | from_yaml }}"
+      operator_vars:
+        metadata: "{{ csv_data.stdout | from_yaml }}"
+
+  - debug:
+      var: operator_vars
