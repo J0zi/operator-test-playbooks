@@ -1,27 +1,29 @@
 ---
-- name: Handle operator input image
+- name: "Handle operator input image"
   block:
-    - set_fact:
+    - name: "Seting image protocol"
+      set_fact:
         image_protocol: "docker-daemon:"
-    - name: Handle operator image input
+
+    - name: "Handle operator image input"
       include_role:
         name: convert_bundle_image_to_dir
   when:
     - operator_input_image != ""
 
-- name: Detect operator format
+- name: "Detect operator format"
   block:
     - fail:
         msg: "Operator version is unefined !!! Try '-e operator_version=x.y.z'."
       when: operator_version is undefined
 
-    - name: Search for annotations.yml
+    - name: "Search for annotations.yml"
       find:
         paths: "{{ operator_dir }}/{{ operator_version }}/metadata"
         patterns: "annotations.yaml"
       register: annotations_presence
 
-    - name: Set operator_format to package manifest or bundle
+    - name: "Set operator_format to package manifest or bundle"
       set_fact:
         operator_format: '{{ ''bundle'' if annotations_presence.files else ''manifest'' }}'
         operator_name: "{{ operator_dir | basename }}"
@@ -41,7 +43,7 @@
         op_dir: "{{ operator_dir }}"
       when: operator_format == "manifest"
 
-    - name: Set operator name variable from csv
+    - name: "Set operator name variable from csv"
       set_fact:
         operator_name: "{{ operator_vars.metadata.name.split('.')[0] }}"
         image_protocol: "docker-daemon:"
@@ -56,12 +58,12 @@
 
     - name: "Read the variables from annotations.yaml"
       block:
-        - name: Check if annotation file exists
+        - name: "Check if annotation file exists"
           stat:
             path: "{{ annotation_file_path }}"
           register: annotation_file_st
 
-        - name: Fail if annotation file doesn't exists
+        - name: "Fail if annotation file doesn't exists"
           fail:
           when: not annotation_file_st.stat.exists
 
@@ -69,11 +71,11 @@
           shell: "cat {{ annotation_file_path }}"
           register: annotation_data
 
-        - name: Sets `annotations_vars` from yaml file
+        - name: "Sets `annotations_vars` from yaml file"
           set_fact:
             annotations_vars: "{{ annotation_data.stdout | from_yaml }}"
 
-        - name: Set annotation variables
+        - name: "Set operators variables from annotation file"
           set_fact:
             operator_channel_default: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.channel.default.v1'] }}"
             operator_channels: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.channels.v1'] }}"

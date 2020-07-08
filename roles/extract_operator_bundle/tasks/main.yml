@@ -25,9 +25,6 @@
   set_fact:
     image_manifest: "{{ skopeo_dir_inspect_result.stdout | from_json }}"
 
-- debug:
-    var: image_manifest
-
 - name: "Unpack the image layers using the umoci tool"
   shell: "{{ umoci_bin_path }} unpack --rootless --image {{ operator_bundle_dir }}:latest {{ operator_bundle_dir }}/data"
 
@@ -42,14 +39,8 @@
       vars:
         op_csv_dir: "{{ operator_bundle_dir }}/data/rootfs"
         operator_format: "bundle"
-    - set_fact:
+    - name: "Setting operator name and version from csv file"
+      set_fact:
         operator_name: "{{ operator_vars.metadata.name.split('.')[0] }}"
-    - set_fact:
         operator_version: "{{ operator_vars.metadata.name.split('.v')[1:] | join('.') }}"
-    - debug:
-        var: operator_name
-        verbosity: 2
-    - debug:
-        var: operator_version
-        verbosity: 2
   when: operator_input_image != ""

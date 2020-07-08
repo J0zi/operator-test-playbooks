@@ -3,13 +3,12 @@
   set_fact:
     bundle_index_image: "{{ bundle_registry }}/{{ bundle_index_image_namespace }}/{{ bundle_index_image_name }}:{{ bundle_index_image_version }}"
 
-- name: Get list of tags for index image from bundle registry
+- name: "Get list of tags for index image from bundle registry"
   uri:
     url: "{{ registry_api_http_protocol | default('https') }}://{{ bundle_registry }}/v2/{{ bundle_index_image_namespace }}/{{ bundle_index_image_name }}/tags/list"
     return_content: yes
   register: boi_registry_versions
   failed_when: false
-
 
 - name: "Create repo for index image with public visibility"
   uri:
@@ -27,7 +26,6 @@
     - quay_api_token != ""
     - boi_registry_versions.status != 200
 
-
 - name: "Reseting 'index_versions_in_registry' variable"
   set_fact:
     index_versions_in_registry: []
@@ -37,17 +35,12 @@
     index_versions_in_registry: "{{ boi_registry_versions.content | from_json | json_query('tags') | list | sort_versions | regex_replace('v') }}"
   when: boi_registry_versions.status == 200
 
-
 - name: "Settig opm index extra arguments"
   set_fact:
     bundle_index_image_from: "{{ bundle_registry }}/{{ bundle_index_image_namespace }}/{{ bundle_index_image_name }}:{{ index_versions_in_registry[0] }}"
     opm_index_add_extra_args: "--from-index {{ bundle_registry }}/{{ bundle_index_image_namespace }}/{{ bundle_index_image_name }}:{{ index_versions_in_registry[0] }}"
   when:
     - index_versions_in_registry[0] is defined
-
-- debug:
-    var: opm_index_add_extra_args
-    verbosity: 2
 
 - name: Handling previous index image
   block:
@@ -60,14 +53,6 @@
     - bundle_index_image_from is defined
     - bundle_index_image_from != ""
 
-- debug:
-    var: ba_name
-    verbosity: 2
-
-- debug:
-    var: ba_versions
-    verbosity: 2
-
 - name: "Setting empty bundles array"
   set_fact:
     bundles_arr: []
@@ -77,14 +62,9 @@
     bundles_arr: "{{ bundles_arr | default([]) }} + [ '{{ bundle_registry }}/{{ bundle_image_namespace }}/{{ ba_name }}:v{{ item }}' ]"
   with_items: "{{ ba_versions }}"
 
-
 - name: "Setting bundle image names"
   set_fact:
     bundle_images: "{{ bundles_arr | join(',') }}"
-
-- debug:
-    var: bundle_images
-    verbosity: 2
 
 - name: "Retag bundle input image"
   block:

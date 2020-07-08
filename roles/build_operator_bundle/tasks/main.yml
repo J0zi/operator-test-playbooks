@@ -5,7 +5,8 @@
     file_type: directory
   register: versions_find
 
-- set_fact:
+- name: "Setting list of versions from directory structre"
+  set_fact:
     versions_in_dir: "{{ versions_find.files | map(attribute='path' ) | map('basename') | list | sort_versions }}"
     operator_dir_name: "{{ operator_dir | basename }}"
 
@@ -49,25 +50,10 @@
     versions_in_registry: "{{ bib_registry_versions.content | from_json | json_query('tags') | list | sort_versions | regex_replace('v') }}"
   when: bib_registry_versions.status == 200
 
-- debug:
-    var: versions_in_registry
-    verbosity: 2
-- debug:
-    var: versions_in_dir
-    verbosity: 2
-
 - name: "Filtering versions to add and remove"
   set_fact:
     verions_add: "{{ versions_in_dir | difference(versions_in_registry) }}"
     verions_remove: "{{ versions_in_registry | difference(versions_in_dir) }}"
-
-- debug:
-    var: verions_add
-    verbosity: 2
-
-- debug:
-    var: verions_remove
-    verbosity: 2
 
 - name: "Reset value for unified package test"
   set_fact:

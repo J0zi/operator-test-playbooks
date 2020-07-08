@@ -16,7 +16,8 @@
     olm_ver: 0.14.1
 
   tasks:
-    - set_fact:
+    - name: "Setting basic variables for test bundle operator tasks"
+      set_fact:
         operator_work_dir: "{{ work_dir }}/operator-files"
         operator_bundle_dir: "{{ work_dir }}/operator-bundle"
         jq_bin_path: "{{ testing_bin_path }}/jq"
@@ -60,19 +61,16 @@
       include_role:
         name: validate_operator_bundle
 
-    - set_fact:
+    - name: "Setting 'operator_for_index' variable"
+      set_fact:
         operators_for_index: '{{ operators_for_index | default([]) | union( [{"name": "{{ operator_package_name }}", "versions": [ "{{ operator_version }}" ] }]) }}'
-
-    - debug:
-        var: operators_for_index
-        verbosity: 2
 
     - name: "Build the operator bundle index"
       include_role:
         name: build_operators_index
       when: run_upstream|bool
 
-    - name: "OLM"
+    - name: "OLM setup"
       block:
         - name: "Check if OLM is needed"
           shell: "{{ oc_bin_path }} api-resources | grep -o operatorgroup"

@@ -32,7 +32,8 @@
         - always
       when: run_upstream|bool
   tasks:
-    - set_fact:
+    - name: "Setting basic variables for test operator tasks"
+      set_fact:
         operator_work_dir: "{{ work_dir }}/operator-files"
         olm_operator_files_path: "{{ work_dir }}/olm-operator-files"
         scorecard_cr_dir: "{{ work_dir }}/scorecard-cr-files"
@@ -230,7 +231,6 @@
             - run_imagesource|bool
             - run_deploy|bool
             - not run_upstream|bool
-
       when:
         - run_deploy|bool
 

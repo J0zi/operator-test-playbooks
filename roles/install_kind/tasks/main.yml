@@ -5,6 +5,7 @@
       stat:
         path: "{{ kind_bin_path }}"
       register: rc_kind
+
     - name: "Delete kind cluster"
       shell: "kind delete cluster --name {{ kind_cluster_name }}"
       when: rc_kind.stat.exists
@@ -37,7 +38,7 @@
         path: "{{ kind_bin_path }}"
       register: rc_kind
 
-    - name: "Install kind"
+    - name: "Install kind binary"
       get_url:
         url: "https://github.com/kubernetes-sigs/kind/releases/download/{{ kind_version }}/kind-linux-amd64"
         dest: "{{ kind_bin_path }}"

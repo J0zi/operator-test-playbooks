@@ -1,19 +1,17 @@
-- name: Handle bundle image from source image
+- name: "Handle bundle image from source image"
   block:
-    - name: Set input image
+    - name: "Setting operator parameters from input image"
       set_fact:
         bundle_image: "{{ operator_input_image }}"
         operator_name: "{{ operator_input_image.split(':')[0] | basename }}"
         operator_version: "{{ operator_input_image.split(':')[1] }}"
         operator_format: "bundle"
-    # - fail:
-    #     msg: "{{ operator_name }} {{ operator_version }}"
-    - name: Remove bundle image {{ bundle_image }}
+    - name: "Remove bundle image {{ bundle_image }}"
       shell: "{{ opm_container_tool }} rmi -f {{ bundle_image }}"
   when:
     - operator_input_image != ""
 
-- name: Handle bundle image from source dir
+- name: "Handle bundle image from source dir"
   block:
     - name: "Ensure that the operator manifest to bundle directory exists and is empty"
       file:
@@ -81,18 +79,18 @@
         - operator_channel_force != ""
         - operator_format == "manifest"
 
-    - name: Ensure replaces is removed in this test
+    - name: "Ensure replaces is removed in this test"
       block:
-        - name: Check if csv file exists
+        - name: "Check if csv file exists"
           stat:
             path: "{{ clusterserviceversion_bundle_file_path }}"
           register: clusterserviceversion_bundle_file_st
 
-        - name: Fail if csv file doesn't exists
+        - name: "Fail if csv file doesn't exists"
           fail:
           when: not clusterserviceversion_bundle_file_st.stat.exists
 
-        - name: Ensure replaces is removed in the csv file
+        - name: "Ensure replaces is removed in the csv file"
           lineinfile:
             path: '{{ clusterserviceversion_bundle_file_path }}'
             regexp: '^\s*replaces:'
@@ -116,11 +114,11 @@
 
     - name: "Read the variables from annotations.yaml"
       block:
-        - name: Set bundle image name
+        - name: "Set bundle image name"
           set_fact:
             bundle_image: "{{ bundle_registry }}/{{ bundle_image_namespace }}/{{ operator_package_name }}:v{{ operator_version }}"
 
-        - name: Remove bundle image {{ bundle_image }}
+        - name: "Remove bundle image {{ bundle_image }}"
           shell: "{{ opm_container_tool }} rmi -f {{ bundle_image }}"
 
         - name: "Generate bundle image {{ bundle_image }} from bundle format"
@@ -145,7 +143,7 @@
             chdir: "{{ operator_bundle_src_dir }}/{{ operator_dir_name }}"
       when: operator_format == "manifest"
 
-    - name: Push bundle image {{ bundle_image }}
+    - name: "Push bundle image {{ bundle_image }}"
       shell: "{{ opm_container_tool }} push {{ bundle_image }}"
   when:
     - operator_input_image == ""

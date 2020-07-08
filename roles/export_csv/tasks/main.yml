@@ -28,9 +28,12 @@
         file_type: file
         patterns: '*.clusterserviceversion.yaml'
       register: csv_find_manifest
-    - fail:
+
+    - name: "Failing if csv file was found"
+      fail:
         msg: "Could not find csv file in '{{ op_csv_dir }}'"
       when: csv_find_manifest.files|length == 0
+
     - set_fact:
         csv_file_path: "{{ csv_find_manifest.files[0].path }}"
   when: operator_format == "manifest"
@@ -42,7 +45,7 @@
       path: "{{ csv_file_path }}"
     register: csv_file_st
 
-  - name: Fail if package file doesn't exists
+  - name: "Fail if package file doesn't exists"
     fail:
     when: not csv_file_st.stat.exists
 
@@ -54,6 +57,3 @@
     set_fact:
       operator_vars:
         metadata: "{{ csv_data.stdout | from_yaml }}"
-
-  - debug:
-      var: operator_vars

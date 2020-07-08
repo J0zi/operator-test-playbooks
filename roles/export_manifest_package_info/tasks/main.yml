@@ -1,5 +1,5 @@
 ---
-- name: Search for package.yml
+- name: "Search for package.yml"
   find:
     paths: "{{ op_dir }}"
     patterns: "*.package.yaml"
@@ -10,10 +10,6 @@
     - name: "Setting package file name"
       set_fact:
         pkg_file_path: "{{ manifest_package_file.files[0].path }}"
-
-    - debug:
-        var: pkg_file_path
-        verbosity: 2
 
     - name: "Getting content of package file"
       shell: "cat {{ pkg_file_path }}"
@@ -27,7 +23,4 @@
       set_fact:
         operator_package_name: "{{ op_manifest_pkg_vars.packageName }}"
 
-    - debug:
-        var: op_manifest_pkg_vars
-        verbosity: 2
   when: manifest_package_file.files.0 is defined

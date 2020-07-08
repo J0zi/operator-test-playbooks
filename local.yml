@@ -41,7 +41,8 @@
         - always
       when: run_upstream|bool
 
-    - set_fact:
+    - name: "Setting basic task variables"
+      set_fact:
         work_dir: "{{ work_dir | default('/tmp/operator-test') }}"
         operator_dir: "{{ operator_dir | default('dummy') }}"
         operator_input_image: "{{ operator_input_image | default('') }}"
