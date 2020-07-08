@@ -19,6 +19,7 @@
     msg: "Versions of the operator must be in one package, not a mix of {{ annotations_vars.annotations['operators.operatorframework.io.bundle.package.v1'] }} and {{ previous_package }}"
   when:  annotations_vars.annotations['operators.operatorframework.io.bundle.package.v1'] != previous_package
 
-- name: "Set package for test with next operator"
-  set_fact:
-    previous_package: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.package.v1'] }}"
+# TODO: Why is it needed?
+# - name: "Set package for test with next operator"
+#   set_fact:
+#     previous_package: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.package.v1'] }}"

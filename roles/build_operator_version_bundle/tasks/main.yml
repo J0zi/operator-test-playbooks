@@ -109,9 +109,10 @@
         msg: "Versions of {{ operator_name }} must be in one package, not a mix of {{ operator_package_name }} and {{ previous_package }}"
       when:  operator_package_name != previous_package
 
-    - name: "Set package for test with next operator"
-      set_fact:
-        previous_package: "{{ operator_package_name }}"
+# TODO: Why is it needed?
+    # - name: "Set package for test with next operator"
+    #   set_fact:
+    #     previous_package: "{{ operator_package_name }}"
 
     - name: "Read the variables from annotations.yaml"
       block:

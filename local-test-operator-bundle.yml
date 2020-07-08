@@ -32,16 +32,14 @@
         name: install_operator_prereqs
       when: run_prereqs|bool
 
-    - name: "Reset value for unified package test"
-      set_fact:
-        previous_package: ''
+    # - name: "Reset value for unified package test"
+    #   set_fact:
+    #     previous_package: ''
 
     - name: "Check package unification"
       include_role:
         name: check_package_bundle
-      when:
-        - run_upstream|bool
-        - operator_format == "bundle"
+      when: run_upstream|bool
 
     - name: "Build bundle image"
       include_role:

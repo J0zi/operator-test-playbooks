@@ -1,17 +1,17 @@
-- name: "Search for all versions for operator '{{ operator_dir | basename }}'"
-  find:
-    paths: "{{ operator_dir }}"
-    recurse: no
-    file_type: directory
-  register: versions_find
+# TODO: Why is it needed?
+# - name: "Search for all versions for operator '{{ operator_dir | basename }}'"
+#   find:
+#     paths: "{{ operator_dir }}"
+#     recurse: no
+#     file_type: directory
+#   register: versions_find
 
-- set_fact:
-    versions_in_dir: "{{ versions_find.files | map(attribute='path' ) | map('basename') | list | sort_versions }}"
-    operator_dir_name: "{{ operator_dir | basename }}"
+# - set_fact:
+#     versions_in_dir: "{{ versions_find.files | map(attribute='path' ) | map('basename') | list | sort_versions }}"
 
-- debug:
-    var: operator_dir
-    verbosity: 2
+# - debug:
+#     var: operator_dir
+#     verbosity: 2
 
 - name: "Determine the path in the operator metadata directory"
   find:
@@ -33,6 +33,23 @@
   set_fact:
     previous_package: ''
 
-- name: "Loop, load and compare package info"
-  include_tasks: load_and_compare_package_info.yml
-  loop: "{{ annotations_paths}}"
+- name: "Export Package variables"
+  block:
+    - name: "Extract package info from package file"
+      include_role:
+        name: export_manifest_package_info
+      vars:
+        op_dir: "{{ operator_dir }}"
+    - name: "Sets previous package from package file with value '{{ operator_package_name }}'"
+      set_fact:
+        previous_package: "{{ operator_package_name }}"
+      when: operator_package_name is defined
+  when: operator_dir is defined
+
+- name: "Loop, load and compare package name"
+  include_tasks: load_and_compare_package_name.yml
+  loop: "{{ annotations_paths }}"
+
+- name: "Reset value for unified package test"
+  set_fact:
+    previous_package: ''
