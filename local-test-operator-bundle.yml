@@ -32,9 +32,22 @@
         name: install_operator_prereqs
       when: run_prereqs|bool
 
+    - name: "Reset value for unified package test"
+      set_fact:
+        previous_package: ''
+
+    - name: "Check package unification"
+      include_role:
+        name: check_package_bundle
+      when:
+        - run_upstream|bool
+        - operator_format == "bundle"
+
     - name: "Build bundle image"
       include_role:
-        name: build_image_bundle
+        name: build_operator_version_bundle
+      vars:
+        remove_replaces: true
       when: run_upstream|bool
 
     - name: "Extract the operator bundle image into files needed to run the tests"
@@ -49,9 +62,16 @@
       include_role:
         name: validate_operator_bundle
 
+    - set_fact:
+        operators_for_index: '{{ operators_for_index | default([]) | union( [{"name": "{{ operator_package_name }}", "versions": [ "{{ operator_version }}" ] }]) }}'
+
+    - debug:
+        var: operators_for_index
+        verbosity: 2
+
     - name: "Build the operator bundle index"
       include_role:
-        name: build_index_bundle
+        name: build_operators_index
       when: run_upstream|bool
 
     - name: "OLM"
@@ -59,7 +79,7 @@
         - name: "Check if OLM is needed"
           shell: "{{ oc_bin_path }} api-resources | grep -o operatorgroup"
           register: olm_needed
-          ignore_errors: true
+          failed_when: false
 
         - name: "Install OLM"
           block:
@@ -68,7 +88,7 @@
 
             - name: "Delete catalogsource"
               shell: "{{ oc_bin_path }} delete catalogsource operatorhubio-catalog -n olm"
-              ignore_errors: true
+              failed_when: false
           when:
             - olm_needed.stdout != "operatorgroup"
       when: run_upstream|bool

@@ -75,11 +75,11 @@
           shell: "cat {{ annotation_file_path }}"
           register: annotation_data
 
-        - name: "Set facts"
+        - name: "Set annotation variables"
           set_fact:
             annotations_vars: "{{ annotation_data.stdout | from_yaml }}"
 
-        - name: "Set annotation variables"
+        - name: "Set operator variables from annotation info"
           set_fact:
             operator_channel_default: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.channel.default.v1'] }}"
             operator_channels: "{{ annotations_vars.annotations['operators.operatorframework.io.bundle.channels.v1'] }}"
