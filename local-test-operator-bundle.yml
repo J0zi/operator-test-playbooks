@@ -37,16 +37,16 @@
     #   set_fact:
     #     previous_package: ''
 
-    - name: "Check package unification"
-      include_role:
-        name: check_package_bundle
-      when: run_upstream|bool
-
     - name: "Build bundle image"
       include_role:
         name: build_operator_version_bundle
       vars:
         remove_replaces: true
+      when: run_upstream|bool
+
+    - name: "Check package unification"
+      include_role:
+        name: check_package_bundle
       when: run_upstream|bool
 
     - name: "Extract the operator bundle image into files needed to run the tests"
