@@ -1,0 +1,25 @@
+dist: bionic
+language: python
+os: linux
+sudo: required
+
+if: type = pull_request
+
+python:
+- "3.8"
+
+env:
+- DISTRO_TYPE=upstream ANSIBLE_STDOUT_CALLBACK=yaml PLAYBOOK_CMD="ansible-playbook -vv -i localhost, local.yml -e kind_version=v0.8.1 -e kind_kube_version=v1.18.2 -e olm_version=0.15.1 -e operator_sdk_version=v0.18.2 -e opm_version=v1.13.0 -e ansible_connection=local -e run_upstream=true --tags app_registry -e operator_base_dir=/tmp/community-operators-for-catalog/upstream-community-operators -e bundle_index_image=quay.io/operatorhubio/catalog:latest"
+
+services:
+  - docker
+
+install:
+  - pip install ansible jmespath
+  - $PLAYBOOK_CMD --tags host_build
+
+jobs:
+  include:
+  - stage: Operator Tests pack 1
+    name: Testing operator in bundle format
+    script: $PLAYBOOK_CMD
